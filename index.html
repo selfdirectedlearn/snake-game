@@ -4,14 +4,31 @@
   <meta charset="UTF-8" />
   <title>貪吃蛇遊戲</title>
   <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #111;
+      color: #eee;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 20px;
+      gap: 30px;
+      min-height: 100vh;
+    }
+    #game-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
     canvas {
       background-color: #000;
-      display: block;
-      margin: 20px auto;
       border: 2px solid #fff;
+      display: block;
     }
     #controls {
       text-align: center;
+      margin-top: 10px;
     }
     button {
       margin: 5px;
@@ -22,17 +39,18 @@
       border: none;
       border-radius: 5px;
       cursor: pointer;
+      user-select: none;
     }
     button:hover {
       background-color: #45a049;
     }
     #touchControls {
       display: none;
-      margin-top: 10px;
+      margin-top: 15px;
       text-align: center;
     }
     #touchControls .row {
-      margin: 5px;
+      margin: 5px 0;
     }
     button.ctrl {
       width: 60px;
@@ -43,27 +61,63 @@
       color: white;
       border: none;
       border-radius: 10px;
+      user-select: none;
     }
     button.ctrl:active {
       background-color: #0b7dda;
     }
+    #instructions {
+      max-width: 350px;
+      background: #222;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px #000;
+      line-height: 1.6;
+    }
+    #instructions h2 {
+      margin-top: 0;
+      color: #4CAF50;
+      text-align: center;
+    }
   </style>
 </head>
 <body>
-  <canvas id="gameCanvas" width="800" height="800"></canvas>
-  <div id="controls">
-    <button id="startBtn">開始遊戲</button>
-    <button id="resetBtn" style="display:none;">重新開始遊戲</button>
+  <div id="game-container">
+    <canvas id="gameCanvas" width="800" height="800"></canvas>
+    <div id="controls">
+      <button id="startBtn">開始遊戲</button>
+      <button id="resetBtn" style="display:none;">重新開始遊戲</button>
+    </div>
+    <div id="touchControls">
+      <div class="row">
+        <button class="ctrl" onclick="setDirection('UP')">⬆</button>
+      </div>
+      <div class="row">
+        <button class="ctrl" onclick="setDirection('LEFT')">⬅</button>
+        <button class="ctrl" onclick="setDirection('DOWN')">⬇</button>
+        <button class="ctrl" onclick="setDirection('RIGHT')">➡</button>
+      </div>
+    </div>
   </div>
-  <div id="touchControls">
-    <div class="row">
-      <button class="ctrl" onclick="setDirection('UP')">⬆</button>
-    </div>
-    <div class="row">
-      <button class="ctrl" onclick="setDirection('LEFT')">⬅</button>
-      <button class="ctrl" onclick="setDirection('DOWN')">⬇</button>
-      <button class="ctrl" onclick="setDirection('RIGHT')">➡</button>
-    </div>
+
+  <div id="instructions">
+    <h2>遊戲說明</h2>
+    <p><strong>如何操作：</strong></p>
+    <ul>
+      <li>使用鍵盤的 <strong>W (上)、A (左)、S (下)、D (右)</strong> 鍵來控制蛇的移動方向。</li>
+      <li>在手機上，使用螢幕上的方向按鈕控制移動。</li>
+    </ul>
+    <p><strong>遊戲目標：</strong></p>
+    <ul>
+      <li>吃到紅色的食物，蛇會變長，分數會增加。</li>
+      <li>避免撞到牆壁或蛇身，否則遊戲結束。</li>
+    </ul>
+    <p><strong>操作按鈕：</strong></p>
+    <ul>
+      <li>點擊「開始遊戲」按鈕開始遊戲。</li>
+      <li>遊戲中可以點擊「重新開始遊戲」按鈕重置遊戲。</li>
+    </ul>
+    <p>祝你遊戲愉快！🐍</p>
   </div>
 
   <script>
@@ -164,3 +218,4 @@
   </script>
 </body>
 </html>
+
