@@ -26,6 +26,27 @@
     button:hover {
       background-color: #45a049;
     }
+    #touchControls {
+      display: none;
+      margin-top: 10px;
+      text-align: center;
+    }
+    #touchControls .row {
+      margin: 5px;
+    }
+    button.ctrl {
+      width: 60px;
+      height: 60px;
+      font-size: 30px;
+      margin: 5px;
+      background-color: #2196F3;
+      color: white;
+      border: none;
+      border-radius: 10px;
+    }
+    button.ctrl:active {
+      background-color: #0b7dda;
+    }
   </style>
 </head>
 <body>
@@ -33,6 +54,16 @@
   <div id="controls">
     <button id="startBtn">開始遊戲</button>
     <button id="resetBtn" style="display:none;">重新開始遊戲</button>
+  </div>
+  <div id="touchControls">
+    <div class="row">
+      <button class="ctrl" onclick="setDirection('UP')">⬆</button>
+    </div>
+    <div class="row">
+      <button class="ctrl" onclick="setDirection('LEFT')">⬅</button>
+      <button class="ctrl" onclick="setDirection('DOWN')">⬇</button>
+      <button class="ctrl" onclick="setDirection('RIGHT')">➡</button>
+    </div>
   </div>
 
   <script>
@@ -65,6 +96,7 @@
     document.getElementById("startBtn").addEventListener("click", () => {
       document.getElementById("startBtn").style.display = "none";
       document.getElementById("resetBtn").style.display = "inline-block";
+      document.getElementById("touchControls").style.display = "block";
       initGame();
     });
 
@@ -74,6 +106,13 @@
       if (key === "w" && direction !== "DOWN") direction = "UP";
       if (key === "d" && direction !== "LEFT") direction = "RIGHT";
       if (key === "s" && direction !== "UP") direction = "DOWN";
+    }
+
+    function setDirection(newDir) {
+      if (newDir === "LEFT" && direction !== "RIGHT") direction = "LEFT";
+      if (newDir === "UP" && direction !== "DOWN") direction = "UP";
+      if (newDir === "RIGHT" && direction !== "LEFT") direction = "RIGHT";
+      if (newDir === "DOWN" && direction !== "UP") direction = "DOWN";
     }
 
     function draw() {
