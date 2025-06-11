@@ -110,6 +110,7 @@
     let snake, direction, nextDirection, food, score;
     let lastTime = 0;
     const moveDelay = 150;
+    let isGameOver = false;
 
     function initGame() {
       snake = [{ x: 160, y: 200 }];
@@ -118,6 +119,7 @@
       food = spawnFood();
       score = 0;
       lastTime = 0;
+      isGameOver = false;
       requestAnimationFrame(gameLoop);
     }
 
@@ -155,11 +157,13 @@
     }
 
     function gameLoop(timestamp) {
-      if (!lastTime || timestamp - lastTime > moveDelay) {
+      if (!isGameOver && (!lastTime || timestamp - lastTime > moveDelay)) {
         draw();
         lastTime = timestamp;
       }
-      requestAnimationFrame(gameLoop);
+      if (!isGameOver) {
+        requestAnimationFrame(gameLoop);
+      }
     }
 
     function draw() {
@@ -186,6 +190,7 @@
         head.y < 0 || head.y >= canvasSize ||
         collision(head, snake)
       ) {
+        isGameOver = true;
         alert("遊戲結束！得分: " + score);
         return;
       }
