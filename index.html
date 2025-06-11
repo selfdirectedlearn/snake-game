@@ -107,15 +107,18 @@
     const ctx = canvas.getContext("2d");
     const box = 20;
     const canvasSize = 800;
-    let snake, direction, food, score, game;
+    let snake, direction, nextDirection, food, score;
+    let lastTime = 0;
+    const moveDelay = 150;
 
     function initGame() {
       snake = [{ x: 160, y: 200 }];
       direction = "RIGHT";
+      nextDirection = "RIGHT";
       food = spawnFood();
       score = 0;
-      if (game) clearInterval(game);
-      game = setInterval(draw, 150);
+      lastTime = 0;
+      requestAnimationFrame(gameLoop);
     }
 
     function spawnFood() {
@@ -138,20 +141,29 @@
 
     function changeDirection(event) {
       const key = event.key.toLowerCase();
-      if (key === "a" && direction !== "RIGHT") direction = "LEFT";
-      if (key === "w" && direction !== "DOWN") direction = "UP";
-      if (key === "d" && direction !== "LEFT") direction = "RIGHT";
-      if (key === "s" && direction !== "UP") direction = "DOWN";
+      if (key === "a" && direction !== "RIGHT") nextDirection = "LEFT";
+      if (key === "w" && direction !== "DOWN") nextDirection = "UP";
+      if (key === "d" && direction !== "LEFT") nextDirection = "RIGHT";
+      if (key === "s" && direction !== "UP") nextDirection = "DOWN";
     }
 
     function setDirection(newDir) {
-      if (newDir === "LEFT" && direction !== "RIGHT") direction = "LEFT";
-      if (newDir === "UP" && direction !== "DOWN") direction = "UP";
-      if (newDir === "RIGHT" && direction !== "LEFT") direction = "RIGHT";
-      if (newDir === "DOWN" && direction !== "UP") direction = "DOWN";
+      if (newDir === "LEFT" && direction !== "RIGHT") nextDirection = "LEFT";
+      if (newDir === "UP" && direction !== "DOWN") nextDirection = "UP";
+      if (newDir === "RIGHT" && direction !== "LEFT") nextDirection = "RIGHT";
+      if (newDir === "DOWN" && direction !== "UP") nextDirection = "DOWN";
+    }
+
+    function gameLoop(timestamp) {
+      if (!lastTime || timestamp - lastTime > moveDelay) {
+        draw();
+        lastTime = timestamp;
+      }
+      requestAnimationFrame(gameLoop);
     }
 
     function draw() {
+      direction = nextDirection;
       ctx.clearRect(0, 0, canvasSize, canvasSize);
 
       for (let i = 0; i < snake.length; i++) {
@@ -174,7 +186,6 @@
         head.y < 0 || head.y >= canvasSize ||
         collision(head, snake)
       ) {
-        clearInterval(game);
         alert("遊戲結束！得分: " + score);
         return;
       }
