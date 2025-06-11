@@ -66,11 +66,19 @@
       font-size: 16px;
       line-height: 1.5;
     }
+    #scoreboard {
+      font-size: 24px;
+      font-weight: bold;
+      color: #333;
+      margin-top: 10px;
+      text-align: center;
+    }
   </style>
 </head>
 <body>
   <div>
     <canvas id="gameCanvas" width="800" height="800"></canvas>
+    <div id="scoreboard">得分：0</div>
     <div id="controls">
       <button id="startBtn">開始遊戲</button>
       <button id="resetBtn" style="display:none;">重新開始遊戲</button>
@@ -105,6 +113,7 @@
   <script>
     const canvas = document.getElementById("gameCanvas");
     const ctx = canvas.getContext("2d");
+    const scoreboard = document.getElementById("scoreboard");
     const box = 20;
     const canvasSize = 800;
     let snake, direction, nextDirection, food, score;
@@ -118,9 +127,14 @@
       nextDirection = "RIGHT";
       food = spawnFood();
       score = 0;
+      updateScore();
       lastTime = 0;
       isGameOver = false;
       requestAnimationFrame(gameLoop);
+    }
+
+    function updateScore() {
+      scoreboard.textContent = "得分：" + score;
     }
 
     function spawnFood() {
@@ -197,6 +211,7 @@
 
       if (head.x === food.x && head.y === food.y) {
         score++;
+        updateScore();
         food = spawnFood();
       } else {
         snake.pop();
