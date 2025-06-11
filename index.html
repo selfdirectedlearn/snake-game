@@ -42,14 +42,14 @@
       margin: 10px;
     }
     button.ctrl {
-      width: 80px;
-      height: 80px;
-      font-size: 36px;
-      margin: 10px;
+      width: 100px;
+      height: 100px;
+      font-size: 48px;
+      margin: 15px;
       background-color: #2196F3;
       color: white;
       border: none;
-      border-radius: 10px;
+      border-radius: 12px;
     }
     button.ctrl:active {
       background-color: #0b7dda;
@@ -70,7 +70,7 @@
 </head>
 <body>
   <div>
-    <canvas id="gameCanvas" width="400" height="400"></canvas>
+    <canvas id="gameCanvas" width="800" height="800"></canvas>
     <div id="controls">
       <button id="startBtn">開始遊戲</button>
       <button id="resetBtn" style="display:none;">重新開始遊戲</button>
@@ -96,7 +96,9 @@
       - S：向下移動<br>
       - D：向右移動<br><br>
       每吃到一個紅色方塊，貪吃蛇會變長並增加一分。<br>
-      若撞到邊界或自己，遊戲結束。
+      若撞到邊界或自己，遊戲結束。<br><br>
+      手機使用者可點擊螢幕上的大按鍵操作。<br>
+      遊戲按鍵已根據螢幕比例加大，便於操作。
     </p>
   </div>
 
@@ -104,7 +106,7 @@
     const canvas = document.getElementById("gameCanvas");
     const ctx = canvas.getContext("2d");
     const box = 20;
-    const canvasSize = 400;
+    const canvasSize = 800;
     let snake, direction, food, score, game;
 
     function initGame() {
