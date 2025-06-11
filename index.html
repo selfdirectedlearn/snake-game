@@ -1,89 +1,76 @@
 <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8">
   <title>貪吃蛇遊戲</title>
   <style>
     body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background-color: #111;
-      color: #eee;
       display: flex;
+      flex-direction: row;
       justify-content: center;
       align-items: flex-start;
-      padding: 20px;
-      gap: 30px;
-      min-height: 100vh;
-    }
-    #game-container {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
+      gap: 40px;
+      font-family: sans-serif;
     }
     canvas {
       background-color: #000;
       border: 2px solid #fff;
-      display: block;
+      margin-top: 20px;
     }
     #controls {
       text-align: center;
-      margin-top: 10px;
     }
     button {
-      margin: 5px;
-      padding: 10px 20px;
-      font-size: 16px;
+      margin: 10px;
+      padding: 20px 40px;
+      font-size: 24px;
       background-color: #4CAF50;
       color: white;
       border: none;
-      border-radius: 5px;
+      border-radius: 10px;
       cursor: pointer;
-      user-select: none;
     }
     button:hover {
       background-color: #45a049;
     }
     #touchControls {
       display: none;
-      margin-top: 15px;
+      margin-top: 10px;
       text-align: center;
     }
     #touchControls .row {
-      margin: 5px 0;
+      margin: 10px;
     }
     button.ctrl {
-      width: 60px;
-      height: 60px;
-      font-size: 30px;
-      margin: 5px;
+      width: 80px;
+      height: 80px;
+      font-size: 36px;
+      margin: 10px;
       background-color: #2196F3;
       color: white;
       border: none;
       border-radius: 10px;
-      user-select: none;
     }
     button.ctrl:active {
       background-color: #0b7dda;
     }
     #instructions {
-      max-width: 350px;
-      background: #222;
-      padding: 20px;
-      border-radius: 10px;
-      box-shadow: 0 0 10px #000;
-      line-height: 1.6;
+      max-width: 300px;
+      margin-top: 20px;
     }
     #instructions h2 {
-      margin-top: 0;
-      color: #4CAF50;
-      text-align: center;
+      font-size: 24px;
+      margin-bottom: 10px;
+    }
+    #instructions p {
+      font-size: 16px;
+      line-height: 1.5;
     }
   </style>
 </head>
 <body>
-  <div id="game-container">
-    <canvas id="gameCanvas" width="800" height="800"></canvas>
+  <div>
+    <canvas id="gameCanvas" width="400" height="400"></canvas>
     <div id="controls">
       <button id="startBtn">開始遊戲</button>
       <button id="resetBtn" style="display:none;">重新開始遊戲</button>
@@ -101,30 +88,23 @@
   </div>
 
   <div id="instructions">
-    <h2>遊戲說明</h2>
-    <p><strong>如何操作：</strong></p>
-    <ul>
-      <li>使用鍵盤的 <strong>W (上)、A (左)、S (下)、D (右)</strong> 鍵來控制蛇的移動方向。</li>
-      <li>在手機上，使用螢幕上的方向按鈕控制移動。</li>
-    </ul>
-    <p><strong>遊戲目標：</strong></p>
-    <ul>
-      <li>吃到紅色的食物，蛇會變長，分數會增加。</li>
-      <li>避免撞到牆壁或蛇身，否則遊戲結束。</li>
-    </ul>
-    <p><strong>操作按鈕：</strong></p>
-    <ul>
-      <li>點擊「開始遊戲」按鈕開始遊戲。</li>
-      <li>遊戲中可以點擊「重新開始遊戲」按鈕重置遊戲。</li>
-    </ul>
-    <p>祝你遊戲愉快！🐍</p>
+    <h2>遊戲玩法與操作說明</h2>
+    <p>
+      使用鍵盤上的 <strong>W、A、S、D</strong> 鍵來控制貪吃蛇的移動方向。<br><br>
+      - W：向上移動<br>
+      - A：向左移動<br>
+      - S：向下移動<br>
+      - D：向右移動<br><br>
+      每吃到一個紅色方塊，貪吃蛇會變長並增加一分。<br>
+      若撞到邊界或自己，遊戲結束。
+    </p>
   </div>
 
   <script>
     const canvas = document.getElementById("gameCanvas");
     const ctx = canvas.getContext("2d");
     const box = 20;
-    const canvasSize = 800;
+    const canvasSize = 400;
     let snake, direction, food, score, game;
 
     function initGame() {
@@ -218,4 +198,3 @@
   </script>
 </body>
 </html>
-
