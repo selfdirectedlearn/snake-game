@@ -66,21 +66,21 @@
       font-size: 16px;
       line-height: 1.5;
     }
-    #scoreboard {
-      font-size: 24px;
-      font-weight: bold;
-      color: #333;
-      margin-top: 10px;
+    #scoreBoard {
       text-align: center;
+      margin-top: 10px;
+      font-size: 20px;
+      color: #fff;
     }
   </style>
 </head>
 <body>
   <div>
     <canvas id="gameCanvas" width="800" height="800"></canvas>
-    <div id="scoreboard">得分：0</div>
+    <div id="scoreBoard">得分：0</div>
     <div id="controls">
       <button id="startBtn">開始遊戲</button>
+      <button id="pauseBtn" style="display:none;">暫停</button>
       <button id="resetBtn" style="display:none;">重新開始遊戲</button>
     </div>
     <div id="touchControls">
@@ -113,13 +113,13 @@
   <script>
     const canvas = document.getElementById("gameCanvas");
     const ctx = canvas.getContext("2d");
-    const scoreboard = document.getElementById("scoreboard");
     const box = 20;
     const canvasSize = 800;
     let snake, direction, nextDirection, food, score;
     let lastTime = 0;
     const moveDelay = 150;
     let isGameOver = false;
+    let isPaused = false;
 
     function initGame() {
       snake = [{ x: 160, y: 200 }];
@@ -127,14 +127,11 @@
       nextDirection = "RIGHT";
       food = spawnFood();
       score = 0;
-      updateScore();
       lastTime = 0;
       isGameOver = false;
+      isPaused = false;
+      updateScore();
       requestAnimationFrame(gameLoop);
-    }
-
-    function updateScore() {
-      scoreboard.textContent = "得分：" + score;
     }
 
     function spawnFood() {
@@ -144,15 +141,25 @@
       };
     }
 
+    function updateScore() {
+      document.getElementById("scoreBoard").textContent = "得分：" + score;
+    }
+
     document.addEventListener("keydown", changeDirection);
     document.getElementById("resetBtn").addEventListener("click", () => {
       initGame();
     });
     document.getElementById("startBtn").addEventListener("click", () => {
       document.getElementById("startBtn").style.display = "none";
+      document.getElementById("pauseBtn").style.display = "inline-block";
       document.getElementById("resetBtn").style.display = "inline-block";
       document.getElementById("touchControls").style.display = "block";
       initGame();
+    });
+    document.getElementById("pauseBtn").addEventListener("click", () => {
+      isPaused = !isPaused;
+      document.getElementById("pauseBtn").textContent = isPaused ? "繼續" : "暫停";
+      if (!isPaused) requestAnimationFrame(gameLoop);
     });
 
     function changeDirection(event) {
@@ -171,11 +178,11 @@
     }
 
     function gameLoop(timestamp) {
-      if (!isGameOver && (!lastTime || timestamp - lastTime > moveDelay)) {
+      if (!isGameOver && !isPaused && (!lastTime || timestamp - lastTime > moveDelay)) {
         draw();
         lastTime = timestamp;
       }
-      if (!isGameOver) {
+      if (!isGameOver && !isPaused) {
         requestAnimationFrame(gameLoop);
       }
     }
@@ -185,8 +192,18 @@
       ctx.clearRect(0, 0, canvasSize, canvasSize);
 
       for (let i = 0; i < snake.length; i++) {
-        ctx.fillStyle = i === 0 ? "lime" : "green";
+        const gradient = ctx.createLinearGradient(0, 0, box, box);
+        if (i === 0) {
+          gradient.addColorStop(0, "#00ff99");
+          gradient.addColorStop(1, "#00cc66");
+        } else {
+          gradient.addColorStop(0, "#66ffcc");
+          gradient.addColorStop(1, "#33cc99");
+        }
+        ctx.fillStyle = gradient;
         ctx.fillRect(snake[i].x, snake[i].y, box, box);
+        ctx.strokeStyle = "#003300";
+        ctx.strokeRect(snake[i].x, snake[i].y, box, box);
       }
 
       ctx.fillStyle = "red";
